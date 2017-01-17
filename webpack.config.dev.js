@@ -1,17 +1,27 @@
 import path from 'path';
+import webpack from 'webpack';
 
 export default {
   devtools: 'eval-source-map',
-  entry: path.join(__dirname, '/client/index.js'),
+  entry: [
+  'webpack-hot-middleware/client',
+  path.join(__dirname, '/client/index.js')
+  ],
   output: {
-    path: '/'
+    path: '/',
+    publicPath: '/'
   },
+  plugins: [
+    new webpack.NoErrorsPlugin(),//handles error messages in cleaner way
+    new webpack.optimize.OccurenceOrderPlugin(),//ensures consistent build hashes
+    new webpack.HotModuleReplacementPlugin()//hot reloader
+  ],
   module: {
     loaders: [
       {
         test: /\.js$/,
         include: path.join(__dirname, 'client'),
-        loaders: [ 'babel' ]
+        loaders: [ 'react-hot', 'babel' ]//hot loader only works for function if it's NOT top component
       }
     ]
   },
