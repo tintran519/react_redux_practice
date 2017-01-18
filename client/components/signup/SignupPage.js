@@ -22,5 +22,5 @@ SignupPage.propTypes = {
 
 //connect takes two params; first is mapStateToProps which provides data from redux store
 //takes state and returns object
-//second param is mapDispatchToProps; specifies action creators wrapped in dispatch
+//second param is matchDispatchToProps; specifies action creators wrapped in dispatch
 export default connect(null, { userSignupRequest })(SignupPage);

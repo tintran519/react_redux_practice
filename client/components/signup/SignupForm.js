@@ -7,7 +7,8 @@ class SignupForm extends React.Component {
       username: '',
       email: '',
       password: '',
-      passwordConfirmation: ''
+      passwordConfirmation: '',
+      errors: {}
     }
     //set 'this' context to component
     this.onChange = this.onChange.bind(this);
@@ -22,12 +23,17 @@ class SignupForm extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+    // this.setState({ errors: {} });
     //call a function to send user data
-    this.props.userSignupRequest(this.state);
+    this.props.userSignupRequest(this.state).then(
+      () => {},
+      ({ res }) => this.setState({ errors: res.data })
+    );
   }
 
 
   render(){
+    const { errors } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <h1>Join!</h1>
