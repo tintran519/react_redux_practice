@@ -20,7 +20,10 @@ export default {
     loaders: [
       {
         test: /\.js$/,
-        include: path.join(__dirname, 'client'),
+        include: [
+        path.join(__dirname, 'client'),
+        path.join(__dirname, 'server/shared')
+        ],
         loaders: [ 'react-hot', 'babel' ]//hot loader only works for function if it's NOT top component
       }
     ]
