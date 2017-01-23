@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class SignupForm extends React.Component {
       email: '',
       password: '',
       passwordConfirmation: '',
-      errors: {}
+      errors: {},
+      isLoading: false
     }
     //set 'this' context to component
     this.onChange = this.onChange.bind(this);
@@ -23,11 +25,13 @@ class SignupForm extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    // this.setState({ errors: {} });
+    //clear error every submit
+    this.setState({ errors: {}, isLoading: true });
     //call a function to send user data
-    this.props.userSignupRequest(this.state).then(
+    this.props.userSignupRequest(this.state)
+    .then(
       () => {},
-      ({ res }) => this.setState({ errors: res.data })
+      ({ response }) => this.setState({ errors: response.data, isLoading: false })
     );
   }
 
@@ -38,7 +42,7 @@ class SignupForm extends React.Component {
       <form onSubmit={this.onSubmit}>
         <h1>Join!</h1>
 
-        <div className="form-group">
+        <div className={classnames("form-group", {'has-error': errors.username})}>
           <label className="control-label">Username</label>
           <input
             value={this.state.username}
@@ -47,9 +51,10 @@ class SignupForm extends React.Component {
             name="username"
             className="form-control"
           />
+          {errors.username && <span className="help-block">{errors.username}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group", {'has-error': errors.email})}>
           <label className="control-label">Email</label>
           <input
             onChange={this.onChange}
@@ -58,9 +63,10 @@ class SignupForm extends React.Component {
             name="email"
             className="form-control"
           />
+          {errors.email && <span className="help-block">{errors.email}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group", {'has-error': errors.password})}>
           <label className="control-label">Password</label>
           <input
             onChange={this.onChange}
@@ -69,9 +75,10 @@ class SignupForm extends React.Component {
             name="password"
             className="form-control"
           />
+          {errors.password && <span className="help-block">{errors.password}</span>}
         </div>
 
-        <div className="form-group">
+        <div className={classnames("form-group",{'has-error': errors.passwordConfirmation})}>
           <label className="control-label">Password Confirmation</label>
           <input
             onChange={this.onChange}
@@ -80,10 +87,11 @@ class SignupForm extends React.Component {
             name="passwordConfirmation"
             className="form-control"
           />
+          {errors.passwordConfirmation && <span className="help-block">{errors.password}</span>}
         </div>
 
         <div className="form-group">
-          <button className="btn btn-primary btn-lg">
+          <button disabled={this.state.isLoading} className="btn btn-primary btn-lg">
             Sign up
           </button>
         </div>
