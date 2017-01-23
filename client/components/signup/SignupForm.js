@@ -2,6 +2,7 @@ import React from 'react';
 // import classnames from 'classnames';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
+// import { browserHistory } from 'react-router';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -45,7 +46,11 @@ class SignupForm extends React.Component {
       //call a function to send user data
       this.props.userSignupRequest(this.state)
       .then(
-        () => {},
+        () => {
+          // //redirecting to root route; push address we want to go to
+          // browserHistory.push('/');
+          this.context.router.push('/');
+        },
         ({ response }) => this.setState({ errors: response.data, isLoading: false })
       );
     }
@@ -80,6 +85,7 @@ class SignupForm extends React.Component {
           onChange={this.onChange}
           value={this.state.password}
           field="password"
+          type="password"
         />
 
         <TextFieldGroup
@@ -87,7 +93,8 @@ class SignupForm extends React.Component {
           label="Password Confirmation"
           onChange={this.onChange}
           value={this.state.passwordConfirmation}
-          field="password confirmation"
+          field="passwordConfirmation"
+          type="password"
         />
 
 
@@ -103,6 +110,10 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
   userSignupRequest: React.PropTypes.func.isRequired
+}
+
+SignupForm.contextTypes = {
+  router: React.PropTypes.object.isRequired
 }
 
 export default SignupForm;
